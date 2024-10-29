@@ -6,54 +6,57 @@
 
     Also, I will use <python3> to run this code.
 '''
-
-def min_attendance_for_long_weekend(input_file_path, output_file_path):
+def min_attendance(input_file_path, output_file_path):
     '''
-        This function will contain your code.  It wil read from the file <input_file_path>,
-        and will write its output to the file <output_file_path>.
+    This function will read from the file <input_file_path>,
+    and will write its output to the file <output_file_path>.
+    '''
 
-         infile = open(input_file_path, 'r')
-    D = int(infile.readline().strip())
+    infile = open(input_file_path, 'r')
+    
+    # Read club sizes from the first line
     clubs = []
     for x in infile.readline().strip().split(','):
-        clubs.append(int(x))
+        clubs.append(int(x))  # Sizes of each club
     infile.close()
+    
+    D = 3  # Fixed number of days
 
-    def is_schedule_possible (max_capacity,D):
+    def is_schedule_possible(max_capacity):
         days_used = 1
         current_day_total = 0
 
-        for club in clubs: 
+        for club in clubs:
             if current_day_total + club <= max_capacity:
                 current_day_total += club
-            else: 
+            else:
+                # Move to the next day
                 days_used += 1
                 current_day_total = club
-                if days_used > D: 
+                # If we exceed the number of days, return False
+                if days_used > D:
                     return False
         return True
 
-    low = max(clubs)
-    high = sum(clubs)
+    low = max(clubs)  # Minimum possible admittance
+    high = sum(clubs)  # Maximum possible admittance
 
-    while low <= high: 
+    # Binary search to find the minimum possible admittance
+    while low <= high:
         mid = (low + high) // 2
-        if is_schedule_possible (mid, D):
-            high = mid - 1
+        if is_schedule_possible(mid):
+            high = mid - 1  # Try for a smaller capacity
         else:
-            low = mid + 1 
+            low = mid + 1  # Increase capacity
 
-
-    outfile = open(output_file_path, 'w')
-    outfile.write(str(low) + '\n')
-    outfile.close()
-
-    '''
-    pass
+    # Writing the result to the output file
+    with open(output_file_path, 'w') as outfile:
+        outfile.write(str(low) + '\n')
 
 '''
-    To test your function, you can uncomment the following command with the the input/output
+    To test your function, you can uncomment the following command with the input/output
     files paths that you want to read from/write to.  Do NOT forget to comment it out before
     submitting.
 '''
-# min_attendance_for_long_weekend('', '')
+# Uncomment the following line to test
+min_attendance('tests/input3.txt', 'testing_output_files/output_text.txt')
