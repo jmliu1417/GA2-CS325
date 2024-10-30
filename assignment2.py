@@ -11,43 +11,6 @@ def min_attendance_for_long_weekend(input_file_path, output_file_path):
     '''
         This function will contain your code.  It wil read from the file <input_file_path>,
         and will write its output to the file <output_file_path>.
-
-         infile = open(input_file_path, 'r')
-    D = int(infile.readline().strip())
-    clubs = []
-    for x in infile.readline().strip().split(','):
-        clubs.append(int(x))
-    infile.close()
-
-    def is_schedule_possible (max_capacity,D):
-        days_used = 1
-        current_day_total = 0
-
-        for club in clubs: 
-            if current_day_total + club <= max_capacity:
-                current_day_total += club
-            else: 
-                days_used += 1
-                current_day_total = club
-                if days_used > D: 
-                    return False
-        return True
-
-    low = max(clubs)
-    high = sum(clubs)
-
-    while low <= high: 
-        mid = (low + high) // 2
-        if is_schedule_possible (mid, D):
-            high = mid - 1
-        else:
-            low = mid + 1 
-
-
-    outfile = open(output_file_path, 'w')
-    outfile.write(str(low) + '\n')
-    outfile.close()
-
     '''
     pass
 
