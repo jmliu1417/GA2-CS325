@@ -6,8 +6,9 @@
 
     Also, I will use <python3> to run this code.
 '''
-def min_attendance_for_long_weekend(input_filename, output_filename):
-    
+def calculate_min_capacity(input_file_path, output_file_path):
+
+    infile = open(input_file_path, 'r')
     clubs = []
     with open(input_filename, 'r') as infile:
         for x in infile.readline().strip().split(','):
@@ -65,4 +66,42 @@ min_attendance_for_long_weekend('tests/input1.txt', 'output.txt')
 #below is code for n*3^n time complexity I think but it gives the right answers :(
 #def min_attendance_for_long_weekend(input_filename, output_filename):
     # Read club sizes from input file
-  
+    with open(input_filename, 'r') as file:
+        clubs = list(map(int, file.readline().strip().split(',')))
+
+    n = len(clubs)
+    max_club_size = max(clubs)
+
+    # Initialize a variable to store the minimized maximum attendance
+    min_max_attendance = float('inf')
+
+    # Function to check all possible distributions of clubs into three days
+    def distribute(clubs, day1, day2, day3):
+        nonlocal min_max_attendance
+        max_day_attendance = max(sum(day1), sum(day2), sum(day3))
+        min_max_attendance = min(min_max_attendance, max_day_attendance)
+
+    # Recursive function to distribute clubs
+    def backtrack(index, day1, day2, day3):
+        if index == n:
+            distribute(clubs, day1, day2, day3)
+            return
+        
+        # Include the current club in day 1
+        backtrack(index + 1, day1 + [clubs[index]], day2, day3)
+        # Include the current club in day 2
+        backtrack(index + 1, day1, day2 + [clubs[index]], day3)
+        # Include the current club in day 3
+        backtrack(index + 1, day1, day2, day3 + [clubs[index]])
+
+    # Start the backtracking
+    backtrack(0, [], [], [])
+
+    # Write the result to output file
+    with open(output_filename, 'w') as file:
+        file.write(f"Minimum attendance required: {min_max_attendance}\n")
+    
+    print(f"Minimum attendance required: {min_max_attendance} written to {output_filename}")
+
+# Example call (uncomment for testing):
+# min_attendance_for_long_weekend('tests/input1.txt', 'output.txt')
